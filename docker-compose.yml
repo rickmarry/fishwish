@@ -1,0 +1,126 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: fishwish
+      POSTGRES_USER: fishwish
+      POSTGRES_PASSWORD: fishwish
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fishwish"]
+      interval: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:latest
+    ports: ["4566:4566"]
+    environment:
+      SERVICES: dynamodb,s3
+      DEFAULT_REGION: us-east-1
+      DEBUG: 1
+    volumes:
+      - "./localstack/init:/etc/localstack/init/ready.d"
+      - "localstack-data:/var/lib/localstack"
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: fishwish
+      MINIO_ROOT_PASSWORD: fishwish123
+    ports: ["9000:9000", "9001:9001"]
+    volumes: ["minio-data:/data"]
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+    ports: ["8081:8081"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file: ./services/user-service/.env.local
+
+  spot-service:
+    build:
+      context: .
+      dockerfile: services/spot-service/Dockerfile
+    ports: ["8082:8082"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file: ./services/spot-service/.env.local
+
+  search-service:
+    build:
+      context: .
+      dockerfile: services/search-service/Dockerfile
+    ports: ["8083:8083"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: ./services/search-service/.env.local
+
+  weather-service:
+    build:
+      context: .
+      dockerfile: services/weather-service/Dockerfile
+    ports: ["8084:8084"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    env_file: ./services/weather-service/.env.local
+
+  social-service:
+    build:
+      context: .
+      dockerfile: services/social-service/Dockerfile
+    ports: ["8085:8085"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    env_file: ./services/social-service/.env.local
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports: ["3000:3000"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_BASE: http://localhost
+      VITE_USER_SERVICE: http://localhost:8081
+      VITE_SPOT_SERVICE: http://localhost:8082
+      VITE_SEARCH_SERVICE: http://localhost:8083
+      VITE_WEATHER_SERVICE: http://localhost:8084
+      VITE_SOCIAL_SERVICE: http://localhost:8085
+    depends_on:
+      - user-service
+      - spot-service
+      - search-service
+      - weather-service
+      - social-service
+
+volumes:
+  pgdata:
+  minio-data:
+  localstack-data:
