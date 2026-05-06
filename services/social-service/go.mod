@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	fishwish v0.0.0
-	github.com/aws/aws-sdk-go-v2 v1.32.2
+	github.com/aws/aws-sdk-go-v2 v1.32.3
 	github.com/aws/aws-sdk-go-v2/config v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.65.1
 	github.com/go-chi/chi/v5 v5.1.0

@@ -44,3 +44,19 @@ build/
 
 # Frontend
 frontend/.vite/
+
+# Go
+go.sum
+vendor/
+
+# Air temp files
+tmp/
+
+# Memory files
+memory/
+
+# Service go.sum files
+services/*/go.sum
+
+# Root go.sum
+go.sum
