@@ -14,14 +14,14 @@ function SpotDetailPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [spotRes, weatherRes] = await Promise.all([
-          spotsAPI.get(id),
-          weatherAPI.get({ lat: 0, lon: 0 }).catch(() => null),
-        ]);
+        const spotRes = await spotsAPI.get(id);
         setSpot(spotRes.data);
-        if (weatherRes) {
-          setWeather(weatherRes.data.conditions);
-          setFishingScore(weatherRes.data.fishing_score);
+
+        if (spotRes.data.lat && spotRes.data.lng) {
+          const weatherRes = await weatherAPI.get({ lat: spotRes.data.lat, lng: spotRes.data.lng }).catch(() => null);
+          if (weatherRes) {
+            setWeather(weatherRes.data);
+          }
         }
       } catch (e) {
         console.error(e);
@@ -128,7 +128,7 @@ function SpotDetailPage() {
 
       {weather && (
         <div className="mt-6">
-          <WeatherWidget conditions={weather} fishingScore={fishingScore} />
+          <WeatherWidget current={weather.current} forecast={weather.forecast} />
         </div>
       )}
 
