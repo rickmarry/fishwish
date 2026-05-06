@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("failed to load config: %v", err)
 	}
 
-	weatherService := service.NewWeatherService(cfg.WeatherAPI)
+	weatherService := service.NewWeatherService(cfg.RedisAddr, cfg.WeatherAPI)
 	weatherHandler := handler.NewWeatherHandler(weatherService)
 
 	r := chi.NewRouter()
