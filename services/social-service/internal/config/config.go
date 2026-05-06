@@ -33,7 +33,7 @@ func Load() (*Config, error) {
 		DBUser:       getEnv("DB_USER", "fishwish"),
 		DBPass:       getEnv("DB_PASSWORD", "fishwish"),
 		RedisURL:     getEnv("REDIS_URL", "redis://localhost:6380"),
-		MinioEndpoint: getEnv("MINIO_ENDPOINT", "localhost:9000"),
+		MinioEndpoint: getEnv("MINIO_ENDPOINT", "localhost:9002"),
 		MinioKey:     getEnv("MINIO_ACCESS_KEY", "fishwish"),
 		MinioSecret:  getEnv("MINIO_SECRET_KEY", "fishwish123"),
 		MinioBucket:  getEnv("MINIO_BUCKET", "fishwish-photos"),
