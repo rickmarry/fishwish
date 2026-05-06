@@ -118,30 +118,30 @@ Search fishing spots by geographic location (within X miles of a point), species
 ---
 
 ### B-003 — Weather Integration
-**Status:** Backlog
+**Status:** Implementation Complete (2026-05-06)
+**Docs:** `docs/b003-design.md`, `docs/b003-spec.md`, `docs/adr/0001-b003-weather-service-design.md`
 
-Real-time weather at fishing spots via Open-Meteo API (free, no key needed). Cached in Redis for 30 minutes.
+**What it is:** Real-time weather and 3-day forecasts at fishing spots via Open-Meteo API (free, no key). Stateless service with Redis caching (30-minute TTL). Coordinates rounded to 3 decimal places for cache efficiency.
 
-**User story:** As a user viewing a fishing spot, I want to see current weather and forecast so I can decide if conditions are good for fishing.
+**What's done:**
+- `GET /weather?lat=X&lng=Y` returns current conditions + 3-day forecast
+- Redis caching with key `weather:{lat}:{lng}`, TTL 1800s
+- WMO weather codes mapped to human-readable descriptions
+- Input validation (lat: -90 to 90, lng: -180 to 180)
+- Error handling: 400 for bad params, 502 for API failure, 504 for timeout
+- Graceful Redis degradation (skip cache if Redis down, call API directly)
+- Open-Meteo API client in `pkg/weather/client.go` (reused)
 
-**Core loop:**
-1. User views a spot detail page
-2. Frontend calls `weather-service` with spot lat/lng
-3. Weather service checks Redis cache (key: `weather:{lat}:{lng}`)
-4. Cache miss → call Open-Meteo API (`https://api.open-meteo.com/v1/forecast?...`)
-5. Cache response for 30 minutes
-6. Return current weather + 3-day forecast (temp, wind, precipitation, pressure)
+**Verification:**
+- `curl http://localhost:8084/weather?lat=39.0968&lng=-120.0324` → 200 with current + forecast
+- Cache hit on 2nd call → `cached: true`
+- Invalid lat → 400 Bad Request
 
-**Design decisions already made:**
-- No database in weather-service — stateless, Redis only
-- Open-Meteo API — free, no registration, no key
-- Cache TTL: 30 minutes (weather changes, but not instantly)
-
-**Suggested architecture:**
-- `weather-service`: `GET /weather?lat=X&lng=Y` → `WeatherResponse{current, forecast[]}`
-- Redis cache: `SETEX weather:{lat}:{lng} 1800 <json>`
-- Open-Meteo params: `current=temperature_2m,wind_speed_10m,precipitation,pressure_msl&daily=temperature_2m_max,precipitation_sum,wind_speed_10m_max`
-- Frontend: weather widget on spot detail page
+**Key design decisions:**
+- Stateless service (no DB) — weather is ephemeral data
+- Open-Meteo over OpenWeatherMap — no API key, no registration
+- Redis cache with 30min TTL — balances freshness vs. API calls
+- Coordinate rounding to 3 decimals — ~110m precision, avoids cache fragmentation
 
 ---
 
