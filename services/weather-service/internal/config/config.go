@@ -18,7 +18,7 @@ func Load() (*Config, error) {
 
 	cfg := &Config{
 		Port:      getEnv("PORT", "8084"),
-		RedisAddr: redisAddrFromURL(getEnv("REDIS_URL", "redis://localhost:6379")),
+		RedisAddr: redisAddrFromURL(getEnv("REDIS_URL", "redis://localhost:6380")),
 		WeatherAPI: getEnv("WEATHER_API_KEY", ""),
 	}
 
