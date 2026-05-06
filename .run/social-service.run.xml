@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="social-service" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="fishwish" />
+    <working_directory value="$PROJECT_DIR$/services/social-service" />
+    <parameters value="cmd/server/main.go" />
+    <envp>
+      <env name="PORT" value="8085" />
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_PORT" value="5432" />
+      <env name="DB_NAME" value="fishwish" />
+      <env name="DB_USER" value="fishwish" />
+      <env name="DB_PASSWORD" value="fishwish" />
+      <env name="REDIS_URL" value="redis://localhost:6379" />
+      <env name="MINIO_ENDPOINT" value="localhost:9000" />
+      <env name="MINIO_ACCESS_KEY" value="fishwish" />
+      <env name="MINIO_SECRET_KEY" value="fishwish123" />
+      <env name="MINIO_BUCKET" value="fishwish-photos" />
+      <env name="MINIO_USE_SSL" value="false" />
+    </envp>
+    <kind value="FILE" />
+    <filePath value="$PROJECT_DIR$/services/social-service/cmd/server/main.go" />
+  </configuration>
+</component>

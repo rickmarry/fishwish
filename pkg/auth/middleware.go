@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"net/http"
 	"strings"
 )
@@ -60,10 +61,10 @@ type contextKey string
 const userIDKey contextKey = "user_id"
 const userRoleKey contextKey = "user_role"
 
-func WithUserID(ctx interface{}, userID string) interface{} {
-	return ctx
+func WithUserID(ctx context.Context, userID string) context.Context {
+	return context.WithValue(ctx, userIDKey, userID)
 }
 
-func WithUserRole(ctx interface{}, role string) interface{} {
-	return ctx
+func WithUserRole(ctx context.Context, role string) context.Context {
+	return context.WithValue(ctx, userRoleKey, role)
 }

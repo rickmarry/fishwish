@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="weather-service" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="fishwish" />
+    <working_directory value="$PROJECT_DIR$/services/weather-service" />
+    <parameters value="cmd/server/main.go" />
+    <envp>
+      <env name="PORT" value="8084" />
+      <env name="REDIS_URL" value="redis://localhost:6379" />
+      <env name="WEATHER_API_KEY" value="" />
+    </envp>
+    <kind value="FILE" />
+    <filePath value="$PROJECT_DIR$/services/weather-service/cmd/server/main.go" />
+  </configuration>
+</component>

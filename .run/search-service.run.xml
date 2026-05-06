@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="search-service" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="fishwish" />
+    <working_directory value="$PROJECT_DIR$/services/search-service" />
+    <parameters value="cmd/server/main.go" />
+    <envp>
+      <env name="PORT" value="8083" />
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_PORT" value="5432" />
+      <env name="DB_NAME" value="fishwish" />
+      <env name="DB_USER" value="fishwish" />
+      <env name="DB_PASSWORD" value="fishwish" />
+    </envp>
+    <kind value="FILE" />
+    <filePath value="$PROJECT_DIR$/services/search-service/cmd/server/main.go" />
+  </configuration>
+</component>

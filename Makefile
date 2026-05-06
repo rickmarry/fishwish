@@ -1,7 +1,7 @@
 .PHONY: up down dev migrate seed test clean build proto
 
 up:
-	docker compose up -d postgres redis localstack minio
+	docker compose up -d postgres redis minio
 	@echo "Waiting for services to be healthy..."
 	@until docker compose exec postgres pg_isready -U fishwish 2>/dev/null; do sleep 1; done
 	@echo "Infrastructure ready."
@@ -10,6 +10,8 @@ down:
 	docker compose down
 
 dev: up
+	@echo "Stopping any running services..."
+	@-lsof -i :8081 -i :8082 -i :8083 -i :8084 -i :8085 2>/dev/null | grep LISTEN | awk '{print $$2}' | sort -u | xargs kill 2>/dev/null || true
 	@echo "Starting Go services with hot reload..."
 	@cd services/user-service && air -c .air.toml &
 	@cd services/spot-service && air -c .air.toml &
@@ -33,11 +35,16 @@ seed:
 	@go run ./scripts/seed/main.go
 
 test:
-	@go test ./services/... -v -count=1
+	@for svc in user-service spot-service search-service weather-service social-service; do \
+		echo "=== $$svc ==="; \
+		cd $(CURDIR)/services/$$svc && go test ./... -v -count=1; \
+	done
 
 test-coverage:
-	@go test ./services/... -v -count=1 -coverprofile=coverage.out
-	@go tool cover -html=coverage.out -o coverage.html
+	@for svc in user-service spot-service search-service weather-service social-service; do \
+		echo "=== $$svc ==="; \
+		cd $(CURDIR)/services/$$svc && go test ./... -v -count=1 -coverprofile=coverage.out; \
+	done
 
 build:
 	@docker compose build

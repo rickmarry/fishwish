@@ -45,9 +45,9 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	r.Get("/search", searchHandler.Search)
-	r.Get("/search/species", searchHandler.Species)
-	r.Get("/search/suggestions", searchHandler.Suggestions)
+	r.Get("/api/search", searchHandler.Search)
+	r.Get("/api/search/species", searchHandler.Species)
+	r.Get("/api/search/suggestions", searchHandler.Suggestions)
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
