@@ -17,42 +17,35 @@ func NewWeatherHandler(svc *service.WeatherService) *WeatherHandler {
 }
 
 func (h *WeatherHandler) GetWeather(w http.ResponseWriter, r *http.Request) {
-	lat, _ := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
-	lon, _ := strconv.ParseFloat(r.URL.Query().Get("lon"), 64)
+	lat, errLat := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
+	lng, errLng := strconv.ParseFloat(r.URL.Query().Get("lng"), 64)
 
-	if lat == 0 && lon == 0 {
-		http.Error(w, "lat and lon are required", http.StatusBadRequest)
+	if errLat != nil || errLng != nil || lat < -90 || lat > 90 || lng < -180 || lng > 180 {
+		http.Error(w, `{"error":"invalid lat/lng parameters","message":"lat (-90 to 90) and lng (-180 to 180) are required"}`, http.StatusBadRequest)
 		return
 	}
 
-	conditions, err := h.service.GetConditions(r.Context(), lat, lon)
+	resp, err := h.service.GetWeather(r.Context(), lat, lng)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, `{"error":"weather API unavailable","message":"`+err.Error()+`"}`, http.StatusBadGateway)
 		return
-	}
-
-	score := h.service.GetFishingScore(r.Context(), conditions)
-
-	resp := map[string]interface{}{
-		"conditions": conditions,
-		"fishing_score": score,
 	}
 
 	writeJSON(w, http.StatusOK, resp)
 }
 
 func (h *WeatherHandler) GetForecast(w http.ResponseWriter, r *http.Request) {
-	lat, _ := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
-	lon, _ := strconv.ParseFloat(r.URL.Query().Get("lon"), 64)
+	lat, errLat := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
+	lng, errLng := strconv.ParseFloat(r.URL.Query().Get("lng"), 64)
 
-	if lat == 0 && lon == 0 {
-		http.Error(w, "lat and lon are required", http.StatusBadRequest)
+	if errLat != nil || errLng != nil || lat < -90 || lat > 90 || lng < -180 || lng > 180 {
+		http.Error(w, `{"error":"invalid lat/lng parameters"}`, http.StatusBadRequest)
 		return
 	}
 
-	forecast, err := h.service.GetForecast(r.Context(), lat, lon)
+	forecast, err := h.service.GetForecast(r.Context(), lat, lng)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, `{"error":"weather API unavailable"}`, http.StatusBadGateway)
 		return
 	}
 
