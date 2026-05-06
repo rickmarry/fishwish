@@ -39,7 +39,7 @@ services:
     environment:
       MINIO_ROOT_USER: fishwish
       MINIO_ROOT_PASSWORD: fishwish123
-    ports: ["9000:9000", "9001:9001"]
+    ports: ["9002:9000", "9003:9001"]
     volumes: ["minio-data:/data"]
 
   user-service:
