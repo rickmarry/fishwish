@@ -122,16 +122,19 @@ The feature is **Complete** when ALL of the following are verified:
 
 ## Frontend Integration Spec
 
-**Component:** `WeatherWidget.tsx` (or similar)
+**Existing components (do not recreate):**
+- `frontend/src/components/WeatherWidget/WeatherWidget.jsx` — already exists, modified to use new response shape
+- `frontend/src/pages/SpotDetail/SpotDetailPage.jsx` — already exists, updated to pass real spot coordinates
 
-**Props:** `lat: number`, `lng: number`
+**WeatherWidget.jsx Props:** `{ current, forecast }`
+- `current`: CurrentWeather object (temperature_c, humidity_percent, etc.)
+- `forecast`: DailyForecast[] array (optional, displayed if present)
 
-**Behavior:**
-1. On mount or lat/lng change, call `GET /api/weather-service/weather?lat={lat}&lng={lng}`
-2. Show skeleton loader while fetching
-3. On success, render current weather + 3-day forecast
-4. On error, show "Weather unavailable" with retry button
-5. Show a small "cached" badge if `cached: true` (optional transparency feature)
+**SpotDetailPage.jsx Behavior:**
+1. After loading spot data, if `spot.lat` and `spot.lng` exist, call `weatherAPI.get({ lat: spot.lat, lng: spot.lng })`
+2. Store response in `weather` state (full WeatherResponse object)
+3. Pass `weather.current` and `weather.forecast` to `<WeatherWidget>`
+4. Renders below spot description, above review section
 
 **Location in UI:** Spot detail page, below spot description, above reviews section.
 
