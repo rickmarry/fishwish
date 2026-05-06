@@ -7,11 +7,11 @@ export default defineConfig({
     port: 3000,
     host: true,
     proxy: {
-      "/api/users": "http://user-service:8081",
-      "/api/spots": "http://spot-service:8082",
-      "/api/search": "http://search-service:8083",
-      "/api/weather": "http://weather-service:8084",
-      "/api/social": "http://social-service:8085",
+      "/api/users": "http://localhost:8081",
+      "/api/spots": "http://localhost:8082",
+      "/api/search": "http://localhost:8083",
+      "/api/weather": "http://localhost:8084",
+      "/api/social": "http://localhost:8085",
     },
   },
 });
