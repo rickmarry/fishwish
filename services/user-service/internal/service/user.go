@@ -13,8 +13,14 @@ import (
 	"fishwish/services/user-service/internal/repository"
 )
 
+type UserRepositoryInterface interface {
+	GetByEmail(ctx context.Context, email string) (string, string, string, error)
+	Create(ctx context.Context, id, email, username, hashedPassword string) error
+	GetByID(ctx context.Context, id string) (string, string, string, error)
+}
+
 type UserService struct {
-	repo *repository.UserRepository
+	repo UserRepositoryInterface
 }
 
 func NewUserService(db *repository.DB) *UserService {
@@ -43,7 +49,7 @@ func (s *UserService) Register(ctx context.Context, req model.RegisterRequest) (
 }
 
 func (s *UserService) Login(ctx context.Context, req model.LoginRequest) (*auth.TokenPair, error) {
-	id, username, hashedPassword, err := s.repo.GetByEmail(ctx, req.Email)
+	id, _, hashedPassword, err := s.repo.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, errors.New("invalid credentials")
 	}
