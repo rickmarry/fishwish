@@ -26,7 +26,7 @@ Active items only — `Backlog` and `Design Complete` status. Completed items ar
 - B-008 — Fishing Buddies & Trip Planning
 - B-009 — Tide Charts & Solunar Tables
 - B-010 — Mobile App (React Native)
-
+- B-012 — Depth Charts / Bathymetry Overlay
 
 ---
 
@@ -165,5 +165,42 @@ Integrate tide data and solunar forecasts (moon phase, sunrise/sunset) for saltw
 **Status:** Backlog (stub — needs full entry)
 
 Wrap the existing React app in React Native or build a native mobile app for on-the-water access.
+
+---
+
+### B-012 — Depth Charts / Bathymetry Overlay
+**Status:** Backlog
+
+**User story:** As an angler, I want to see depth contours and underwater terrain on the map so I can find drop-offs, holes, and structure where fish are likely to hold.
+
+**Core loop:**
+1. User opens the map
+2. Depth chart layer renders as an overlay on the existing MapLibre map
+3. Depth contours, soundings, and shaded bathymetry are visible beneath spot markers
+4. User can toggle the depth layer on/off
+
+**Suggested architecture:**
+- Add a vector tile source + layer to the existing MapLibre map style in `MapView.jsx`
+- Toggle control in the UI (button or layer switcher)
+- No backend changes needed if using a tile service
+
+**Options researched:**
+
+| Provider | Pricing | Coverage | Resolution | Integration |
+|---|---|---|---|---|
+| VectorCharts.com | 25k req/mo **free**, then $1/1k | US + international | Good (NOAA ENC vector tiles) | MapLibre vector tile source |
+| GEBCO WMS | Free | Global | 450m grid (coarse) | WMS tile layer in MapLibre |
+| MarineCharts.io | $49/mo starter | US coastal + inland | Good (NOAA ENC) | MapLibre vector tile source |
+| Navionics Web API | Free (Standard) or Paid (Enhanced) | Global | HD SonarChart | JS library (OpenLayers-based) |
+| Mapbox Bathymetry v2 | Free tier with Mapbox account | Global (GEBCO data) | GEBCO-derived | Mapbox vector tiles |
+
+**Recommendation for V1:** VectorCharts.com has a generous free tier, proper US NOAA ENC data with depth contours, and drops in as a MapLibre vector tile source — minimal code change.
+
+**Caveats:**
+- Inland lake coverage varies significantly between providers (GEBCO is poor, Navionics is best)
+- Free tiers often require attribution
+- If user base grows, 25k requests/month on VectorCharts may be exceeded quickly
+- Navionics Standard (free) does NOT allow overlaying your own content — defeats the purpose
+- Consider making this a toggleable layer (performance impact of rendering both OSM raster tiles and vector depth tiles)
 
 
