@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const DEFAULT_CENTER = [39.8283, -98.5795];
+const DEFAULT_CENTER = [-98.5795, 39.8283];
 const DEFAULT_ZOOM = 4;
 
 function MapView({ spots = [], userLocation, selectedSpot, onSpotClick }) {
