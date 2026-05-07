@@ -26,7 +26,7 @@ Active items only — `Backlog` and `Design Complete` status. Completed items ar
 - B-008 — Fishing Buddies & Trip Planning
 - B-009 — Tide Charts & Solunar Tables
 - B-010 — Mobile App (React Native)
-- B-012 — Depth Charts / Bathymetry Overlay
+- B-012 — Depth Charts / Bathymetry Overlay — Design Complete
 
 ---
 
@@ -169,7 +169,7 @@ Wrap the existing React app in React Native or build a native mobile app for on-
 ---
 
 ### B-012 — Depth Charts / Bathymetry Overlay
-**Status:** Backlog
+**Status:** Design Complete
 
 **User story:** As an angler, I want to see depth contours and underwater terrain on the map so I can find drop-offs, holes, and structure where fish are likely to hold.
 
