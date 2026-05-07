@@ -26,7 +26,7 @@ Active items only — `Backlog` and `Design Complete` status. Completed items ar
 - B-008 — Fishing Buddies & Trip Planning
 - B-009 — Tide Charts & Solunar Tables
 - B-010 — Mobile App (React Native)
-- B-011 — Map: Zoom to Spot on Marker Click
+- B-011 — Map: Zoom to Spot on Marker Click — Design Complete
 
 ---
 
@@ -169,7 +169,7 @@ Wrap the existing React app in React Native or build a native mobile app for on-
 ---
 
 ### B-011 — Map: Zoom to Spot on Marker Click
-**Status:** Backlog
+**Status:** Design Complete
 
 **User story:** As a user browsing spots on the map, I want to zoom in when I click a spot marker so I can see its precise location and surrounding area.
 
