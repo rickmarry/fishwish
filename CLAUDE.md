@@ -44,24 +44,6 @@ Services are built in this sequence — each depends on the previous. **Current 
 
 ---
 
-## Design Discipline — Active Mandate
-
-We follow a spec-driven development stack to prevent intent drift. **Do not skip any layer.**
-
-```
-HLD → LLD → Specs/Contracts → Implementation → Tests enforce contracts
-```
-
-**Status as of 2026-05-06:**
-- HLD — in progress (`docs/architecture.md`)
-- ADRs — establish as needed (`docs/adr/`), write for every non-obvious system-level decision
-- Infrastructure — Postgres, Redis, MinIO running locally via Docker Compose
-- Migrations + seed data — applied (15 species, 10 spots)
-- Services — spot-service and user-service partially implemented
-- LLD/SPEC.md — not yet written; discipline applies for any new services or significant changes
-
----
-
 ## Definition of Done
 
 Before declaring any implementation task complete, verify every applicable item:
@@ -199,4 +181,3 @@ After a PR merges or at end of session:
 - Every service needs a `docs/service.md` — create it as part of building the service, not after
 - Prefer explicit, readable Go over clever Go — interview reviewability matters
 - **The SDLC is Rick's own — frame it that way in interviews.** He didn't read about HLD → LLD → EARS specs → enforced contracts → implementation. He ran into intent drift building a multi-service system with agentic tooling, diagnosed the failure mode himself, and built a process to prevent it. The discipline predates any blog post he's read. When this comes up in interviews, the framing is: "this is how I work, not a methodology I adopted."
-- **Enforce the design discipline.** If Rick moves toward implementation without a DESIGN.md and SPEC.md for the service, flag it.
