@@ -17,6 +17,8 @@ make seed      # load 10 sample spots + 15 species
 make test      # go test ./services/... -v -count=1
 ```
 
+**Depth charts:** Set `VITE_VECTORCHARTS_KEY` in `frontend/.env.local` (get a free key at vectorcharts.com) to enable the bathymetry overlay toggle on the map.
+
 ## Architecture
 
 **5 Go microservices**, each with its own `go.mod` using `replace fishwish => ../../` to import shared code from `pkg/`.
