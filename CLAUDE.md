@@ -72,7 +72,9 @@ Before declaring any implementation task complete, verify every applicable item:
 - [ ] PR created referencing the issue with `Closes #N`
 - [ ] PR merged — `gh pr merge <number> --squash --delete-branch`
 - [ ] `git checkout main && git pull`
-- [ ] **Update `docs/backlog.md` Build Order** — mark the completed item, remove it from "Next up", promote the next item. Commit alongside `memory/project_current_work.md` in the same turn. These two files must always be in sync.
+- [ ] **Update `docs/backlog.md`** — remove the completed item from the Build Order and from its section body.
+- [ ] **Update `docs/backlog-complete.md`** — add a row to the summary table: ID, feature name, PR number, merge date, any notes.
+- [ ] Commit both backlog files alongside `memory/project_current_work.md` in the same turn. All three must always be in sync.
 
 ---
 
@@ -156,15 +158,16 @@ make test      # go test ./services/... -v -count=1
 Do ALL of the following before giving any summary:
 
 1. **Read** `memory/project_current_work.md` (repo root) — current status, next steps
-2. **Read** `docs/backlog.md` — full inventory of all backlog items and their status
+2. **Read** `docs/backlog.md` — active items only (Backlog + Design Complete). If a B-XXX item isn't here, check `docs/backlog-complete.md` — it may be shipped.
 3. Give a concise summary: what's in progress, and the list of all **Design Complete** items (ready to build)
 
 ### ss (save session)
 After a PR merges or at end of session:
 
 1. Update `memory/project_current_work.md` — mark completed items, update next steps
-2. Update `docs/backlog.md` Build Order — remove completed item, promote next. These two files must always be in sync.
-3. Commit both: `git add memory/project_current_work.md docs/backlog.md && git commit -m "docs: update project status - <what changed>"`
+2. Update `docs/backlog.md` — remove completed item from Build Order and body
+3. Update `docs/backlog-complete.md` — add a row to the summary table (ID, feature, PR, date)
+4. Commit all three: `git add memory/project_current_work.md docs/backlog.md docs/backlog-complete.md && git commit -m "docs: update project status - <what changed>"`
 
 ---
 
