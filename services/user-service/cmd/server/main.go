@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"fishwish/services/user-service/internal/config"
 	"fishwish/services/user-service/internal/handler"
@@ -46,6 +47,8 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           300,
 	}))
+
+	r.Get("/metrics", promhttp.Handler().ServeHTTP)
 
 	r.Post("/auth/register", userHandler.Register)
 	r.Post("/auth/login", userHandler.Login)

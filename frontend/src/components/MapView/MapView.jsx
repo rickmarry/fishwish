@@ -79,6 +79,11 @@ function MapView({ spots = [], userLocation, selectedSpot, onSpotClick }) {
   }, [spots, selectedSpot]);
 
   useEffect(() => {
+    if (!mapRef.current || !selectedSpot) return;
+    mapRef.current.flyTo({ center: [selectedSpot.lon, selectedSpot.lat], zoom: 12 });
+  }, [selectedSpot]);
+
+  useEffect(() => {
     if (!mapRef.current || !userLocation) return;
 
     const el = document.createElement("div");

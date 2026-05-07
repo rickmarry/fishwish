@@ -21,7 +21,7 @@ func Load() (*Config, error) {
 	_ = godotenv.Load(".env.local")
 
 	cfg := &Config{
-		Port:     getEnv("PORT", "8081"),
+		Port:     getEnv("PORT", "8086"),
 		DBHost:   getEnv("DB_HOST", "localhost"),
 		DBPort:   getEnv("DB_PORT", "5433"),
 		DBName:   getEnv("DB_NAME", "fishwish"),
