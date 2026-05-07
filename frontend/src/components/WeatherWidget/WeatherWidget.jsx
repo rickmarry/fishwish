@@ -20,7 +20,7 @@ function WeatherWidget({ current, forecast }) {
           <div className="grid grid-cols-3 gap-4">
             {forecast.map((day) => (
               <div key={day.date} className="text-center bg-gray-50 rounded p-3">
-                <div className="text-sm text-gray-500">{new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</div>
+                <div className="text-sm text-gray-500">{new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' })}</div>
                 <div className="text-sm font-semibold">{day.weather_description}</div>
                 <div className="text-sm">{Math.round(day.temp_min_c)}° / {Math.round(day.temp_max_c)}°</div>
                 <div className="text-xs text-gray-500">{day.precipitation_mm}mm rain</div>

@@ -17,8 +17,8 @@ function SpotDetailPage() {
         const spotRes = await spotsAPI.get(id);
         setSpot(spotRes.data);
 
-        if (spotRes.data.lat && spotRes.data.lng) {
-          const weatherRes = await weatherAPI.get({ lat: spotRes.data.lat, lng: spotRes.data.lng }).catch(() => null);
+        if (spotRes.data.lat && spotRes.data.lon) {
+          const weatherRes = await weatherAPI.get({ lat: spotRes.data.lat, lng: spotRes.data.lon }).catch(() => null);
           if (weatherRes) {
             setWeather(weatherRes.data);
           }

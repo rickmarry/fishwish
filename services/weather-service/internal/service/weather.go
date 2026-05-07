@@ -38,7 +38,8 @@ func (s *WeatherService) GetWeather(ctx context.Context, lat, lng float64) (*mod
 	// Round coordinates to 3 decimal places for cache key
 	rLat := roundTo3(lat)
 	rLng := roundTo3(lng)
-	key := fmt.Sprintf("weather:%.3f:%.3f", rLat, rLng)
+	today := time.Now().Format("2006-01-02")
+	key := fmt.Sprintf("weather:%.3f:%.3f:%s", rLat, rLng, today)
 
 	// Try cache first
 	cached, err := s.redis.Get(ctx, key).Result()
@@ -50,13 +51,14 @@ func (s *WeatherService) GetWeather(ctx context.Context, lat, lng float64) (*mod
 		}
 	}
 
-	// Cache miss — call Open-Meteo API
+	// Cache miss — call Open-Meteo API with explicit dates
+	end := time.Now().Add(2 * 24 * time.Hour).Format("2006-01-02")
 	url := fmt.Sprintf(
 		"%s?latitude=%.4f&longitude=%.4f"+
 			"&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl"+
 			"&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,weather_code"+
-			"&timezone=auto&forecast_days=3",
-		s.baseURL, rLat, rLng,
+			"&timezone=auto&start_date=%s&end_date=%s",
+		s.baseURL, rLat, rLng, today, end,
 	)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
