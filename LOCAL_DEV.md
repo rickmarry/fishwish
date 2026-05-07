@@ -45,7 +45,22 @@ To debug: kill the service port above, then start that run config in IntelliJ in
 cd frontend && npm run dev
 ```
 
-Vite dev server on port 3000 (or next available). Proxies `/api/*` to service ports.
+Vite dev server on port 3006. Proxies `/api/*` to service ports.
+
+### Depth Chart / Bathymetry Setup
+
+The map has a toggleable depth chart overlay using VectorCharts.com NOAA ENC tiles.
+
+To enable it:
+1. Sign up at https://vectorcharts.com (free tier: 25k requests/month)
+2. Set your API key in `frontend/.env.local`:
+   ```
+   VITE_VECTORCHARTS_KEY=pk_your_key_here
+   ```
+3. Restart the frontend dev server
+4. A "Depth: OFF" button appears bottom-right of the map
+
+Without the API key, the depth button is hidden and no depth tiles are loaded.
 
 ## Infrastructure
 
