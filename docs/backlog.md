@@ -26,7 +26,7 @@ Active items only — `Backlog` and `Design Complete` status. Completed items ar
 - B-008 — Fishing Buddies & Trip Planning
 - B-009 — Tide Charts & Solunar Tables
 - B-010 — Mobile App (React Native)
-- B-011 — Map: Zoom to Spot on Marker Click — Design Complete
+
 
 ---
 
@@ -165,31 +165,5 @@ Integrate tide data and solunar forecasts (moon phase, sunrise/sunset) for saltw
 **Status:** Backlog (stub — needs full entry)
 
 Wrap the existing React app in React Native or build a native mobile app for on-the-water access.
-
----
-
-### B-011 — Map: Zoom to Spot on Marker Click
-**Status:** Design Complete
-
-**User story:** As a user browsing spots on the map, I want to zoom in when I click a spot marker so I can see its precise location and surrounding area.
-
-**Core loop:**
-1. User clicks a spot marker on the map
-2. Map flies to the spot's coordinates at zoom level 12
-3. Marker highlight behavior (scale/color) is preserved alongside the zoom
-
-**Design decisions to make:**
-- Zoom level for flyTo (12 balances context vs. detail)
-- Fly animation duration (default MapLibre ~1.2s is fine)
-- Whether to zoom on sidebar spot card clicks too (TBD — separate concern)
-
-**Suggested architecture:**
-- Single change to `frontend/src/components/MapView/MapView.jsx`
-- Add a `useEffect` watching `selectedSpot` that calls `mapRef.current.flyTo()`
-- No new dependencies, no backend changes
-
-**Caveats:**
-- A user clicking spots rapidly will trigger multiple flyTo animations — MapLibre aborts in-flight animations gracefully, so this is fine
-- If `selectedSpot` is programmatically cleared (e.g., user clicks empty map area), the map should not jump back to default — only forward zooms on explicit selection
 
 
