@@ -74,6 +74,30 @@ The only trigger for implementation in this session is a backlog item with **sta
 
 ---
 
+## Backlog Management
+
+**Build order is part of item creation — not a separate step.**
+Every new backlog item must be placed in the build order the moment it's created. Review the full order, slot the item in the correct position based on dependencies and strategic value, and update any items whose position shifts as a result. Never add an item and leave it unsequenced — that intention evaporates.
+
+"Parking lot" means genuinely unsequenced — no dependencies, no clear strategic position. It is not a holding area for items that haven't been ordered yet.
+
+**Backlog entries must be self-contained.**
+Every entry must include: user story, core loop, key design decisions, open questions, suggested architecture, and a Caveats section. A one-liner is not a backlog entry. The entry must be complete enough that a build session can start without re-deriving the thinking.
+
+**Caveats are permanent and must be repeated.**
+Every time a backlog item is discussed, its caveats must be surfaced explicitly — not assumed to be remembered. Read the Caveats section before discussing next steps.
+
+**V1/V2 scoping — always surface V2 explicitly.**
+If a feature has V1 (MVP) and V2 (future) scopes, both must appear in the backlog entry with a decision trigger for V2. Never bury V2 in a design doc. Update the backlog entry immediately after V1 ships: mark V1 complete, make V2 visible with its trigger condition.
+
+---
+
+## Design Session Opener — Plain Language First
+
+Every design session must open with a plain-language summary of what we're building and why — the user problem, the proposed solution in one sentence, and why this approach over alternatives. No architecture, no schema, no proto definitions until this is stated and agreed. Jumping straight to implementation detail before the problem is clearly framed produces over-engineered solutions to the wrong problem.
+
+---
+
 ## Architecture Decision Records (ADRs)
 
 System-level design decisions belong in `docs/adr/`. Each ADR is immutable — never edit an ADR; write a new one that supersedes it.
