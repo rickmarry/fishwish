@@ -78,15 +78,9 @@ Before declaring any implementation task complete, verify every applicable item:
 
 ## Shared AI Assistant Rules
 
-**IMPORTANT:** Before starting any work, read and follow the rules in `docs/AI_RULES.md`.
+@docs/AI_RULES.md
 
-That file contains the complete set of workflow rules, conventions, and processes that apply to **all AI assistants** (Claude, Gemini, Junie, etc.) working on this project. Key rules include:
-- Git workflow (issue → branch → commit → push → PR → merge → checkout main)
-- Commit message conventions (conventional commits, no co-author lines)
-- Design discipline (HLD → LLD → Specs → Implementation → Tests)
-- ADR process for architecture decisions
-
-This section exists to provide Claude-specific context below, but the shared rules in `docs/AI_RULES.md` take precedence for workflow and conventions.
+The Claude-specific context below takes precedence for Claude Code sessions; `docs/AI_RULES.md` governs workflow and conventions for all assistants.
 
 ---
 
