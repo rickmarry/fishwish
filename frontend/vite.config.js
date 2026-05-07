@@ -4,14 +4,27 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: 3006,
+    strictPort: true,
     host: true,
     proxy: {
-      "/api/users": "http://localhost:8081",
-      "/api/spots": "http://localhost:8082",
+      "/api/users": {
+        target: "http://localhost:8086",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/api/spots": {
+        target: "http://localhost:8082",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
       "/api/search": "http://localhost:8083",
-      "/api/weather": "http://localhost:8084",
-      "/api/social": "http://localhost:8085",
+      "/api/weather": {
+        target: "http://localhost:8084",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/api/social": {
+        target: "http://localhost:8085",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });
