@@ -90,7 +90,59 @@ func (r *SpotRepository) Nearby(ctx context.Context, lat, lon, radiusMi float64,
 	Rating      float64
 	Species     []string
 }, error) {
-	return nil, nil
+	rows, err := r.db.Pool.Query(ctx, `
+		SELECT id, name, ST_X(location::geometry), ST_Y(location::geometry), type,
+		       COALESCE(rating, 0),
+		       ST_Distance(location::geography, ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography) * 0.000621371
+		FROM spots
+		WHERE ST_DWithin(location::geography, ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography, $3 * 1609.34)
+		ORDER BY location::geography <-> ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography
+		LIMIT $4`,
+		lon, lat, radiusMi, limit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []struct {
+		ID       string
+		Name     string
+		Lat      float64
+		Lon      float64
+		Type     string
+		Distance float64
+		Rating   float64
+		Species  []string
+	}
+	for rows.Next() {
+		var s struct {
+			ID       string
+			Name     string
+			Lat      float64
+			Lon      float64
+			Type     string
+			Distance float64
+			Rating   float64
+			Species  []string
+		}
+		if err := rows.Scan(&s.ID, &s.Name, &s.Lon, &s.Lat, &s.Type, &s.Rating, &s.Distance); err != nil {
+			return nil, err
+		}
+		results = append(results, s)
+	}
+	return results, nil
+}
+
+func (r *SpotRepository) Create(ctx context.Context, name string, lat, lon float64, spotType, difficulty string) (string, error) {
+	var id string
+	err := r.db.Pool.QueryRow(ctx,
+		`INSERT INTO spots (name, location, type, difficulty)
+		 VALUES ($1, ST_SetSRID(ST_MakePoint($2, $3), 4326), $4, $5)
+		 RETURNING id`,
+		name, lon, lat, spotType, difficulty,
+	).Scan(&id)
+	return id, err
 }
 
 func (r *SpotRepository) SearchBySpecies(ctx context.Context, species string, limit int) ([]struct {

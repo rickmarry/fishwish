@@ -17,7 +17,7 @@ make seed      # load 10 sample spots + 15 species
 make test      # go test ./services/... -v -count=1
 ```
 
-**Depth charts:** Set `VITE_VECTORCHARTS_KEY` in `frontend/.env.local` (get a free key at vectorcharts.com) to enable the bathymetry overlay toggle on the map.
+**Depth charts:** Enabled by default using GEBCO WMS (free, no key needed). To use VectorCharts instead, set `VITE_DEPTH_PROVIDER=vectorcharts` and add `VITE_VECTORCHARTS_KEY` in `frontend/.env.local`.
 
 ## Architecture
 

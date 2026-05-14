@@ -46,6 +46,7 @@ func main() {
 	}))
 
 	r.Get("/spots", spotHandler.ListSpots)
+	r.Post("/spots", spotHandler.CreateSpot)
 	r.Get("/spots/nearby", spotHandler.NearbySpots)
 	r.Get("/spots/{id}", spotHandler.GetSpot)
 	r.Get("/spots/{id}/details", spotHandler.GetSpotDetails)

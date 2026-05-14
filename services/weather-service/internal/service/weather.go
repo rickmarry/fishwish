@@ -56,7 +56,7 @@ func (s *WeatherService) GetWeather(ctx context.Context, lat, lng float64) (*mod
 	url := fmt.Sprintf(
 		"%s?latitude=%.4f&longitude=%.4f"+
 			"&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl"+
-			"&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,weather_code"+
+			"&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant,weather_code"+
 			"&timezone=auto&start_date=%s&end_date=%s",
 		s.baseURL, rLat, rLng, today, end,
 	)
@@ -88,12 +88,13 @@ func (s *WeatherService) GetWeather(ctx context.Context, lat, lng float64) (*mod
 			Pressure        float64 `json:"pressure_msl"`
 		} `json:"current"`
 		Daily struct {
-			Time           []string  `json:"time"`
-			TempMax         []float64 `json:"temperature_2m_max"`
-			TempMin         []float64 `json:"temperature_2m_min"`
-			Precipitation   []float64 `json:"precipitation_sum"`
-			WindSpeedMax   []float64 `json:"wind_speed_10m_max"`
-			WeatherCode    []int     `json:"weather_code"`
+			Time              []string  `json:"time"`
+			TempMax           []float64 `json:"temperature_2m_max"`
+			TempMin           []float64 `json:"temperature_2m_min"`
+			Precipitation     []float64 `json:"precipitation_sum"`
+			WindSpeedMax      []float64 `json:"wind_speed_10m_max"`
+			WindDirectionDom  []int     `json:"wind_direction_10m_dominant"`
+			WeatherCode       []int     `json:"weather_code"`
 		} `json:"daily"`
 	}
 
@@ -104,14 +105,19 @@ func (s *WeatherService) GetWeather(ctx context.Context, lat, lng float64) (*mod
 	// Build forecast
 	forecast := make([]model.DailyForecast, 0, len(data.Daily.Time))
 	for i := range data.Daily.Time {
+		wd := 0
+		if i < len(data.Daily.WindDirectionDom) {
+			wd = data.Daily.WindDirectionDom[i]
+		}
 		forecast = append(forecast, model.DailyForecast{
-			Date:           data.Daily.Time[i],
-			TempMaxC:       data.Daily.TempMax[i],
-			TempMinC:       data.Daily.TempMin[i],
-			PrecipitationMM: data.Daily.Precipitation[i],
-			WindSpeedMaxKPH: data.Daily.WindSpeedMax[i],
-			WeatherCode:    data.Daily.WeatherCode[i],
-			WeatherDesc:    model.WeatherCodeToDescription(data.Daily.WeatherCode[i]),
+			Date:             data.Daily.Time[i],
+			TempMaxC:         data.Daily.TempMax[i],
+			TempMinC:         data.Daily.TempMin[i],
+			PrecipitationMM:  data.Daily.Precipitation[i],
+			WindSpeedMaxKPH:  data.Daily.WindSpeedMax[i],
+			WindDirectionDeg: wd,
+			WeatherCode:      data.Daily.WeatherCode[i],
+			WeatherDesc:      model.WeatherCodeToDescription(data.Daily.WeatherCode[i]),
 		})
 	}
 

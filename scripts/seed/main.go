@@ -183,7 +183,7 @@ var speciesData = []struct {
 }
 
 func main() {
-	_ = godotenv.Load("services/spot-service/.env.local")
+	_ = godotenv.Load("../../services/spot-service/.env.local")
 
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		getEnv("DB_USER", "fishwish"),

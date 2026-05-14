@@ -38,7 +38,7 @@ migrate-down:
 	@cd services/spot-service && go run cmd/migrate/main.go down
 
 seed:
-	@go run ./scripts/seed/main.go
+	@cd scripts/seed && go run main.go
 
 test:
 	@for svc in user-service spot-service search-service weather-service social-service; do \

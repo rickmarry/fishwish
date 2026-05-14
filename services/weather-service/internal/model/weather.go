@@ -18,13 +18,14 @@ type CurrentWeather struct {
 }
 
 type DailyForecast struct {
-	Date            string  `json:"date"`
-	TempMaxC        float64 `json:"temp_max_c"`
-	TempMinC        float64 `json:"temp_min_c"`
-	PrecipitationMM float64 `json:"precipitation_mm"`
-	WindSpeedMaxKPH float64 `json:"wind_speed_max_kph"`
-	WeatherCode     int     `json:"weather_code"`
-	WeatherDesc     string  `json:"weather_description"`
+	Date                 string  `json:"date"`
+	TempMaxC             float64 `json:"temp_max_c"`
+	TempMinC             float64 `json:"temp_min_c"`
+	PrecipitationMM      float64 `json:"precipitation_mm"`
+	WindSpeedMaxKPH      float64 `json:"wind_speed_max_kph"`
+	WindDirectionDeg     int     `json:"wind_direction_deg"`
+	WeatherCode          int     `json:"weather_code"`
+	WeatherDesc          string  `json:"weather_description"`
 }
 
 func WeatherCodeToDescription(code int) string {

@@ -1,6 +1,6 @@
 module fishwish/services/weather-service
 
-go 1.24
+go 1.25.0
 
 require (
 	fishwish v0.0.0
@@ -13,7 +13,6 @@ require (
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 replace fishwish => ../../

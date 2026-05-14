@@ -68,6 +68,26 @@ func (h *SpotHandler) GetSpotDetails(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, details)
 }
 
+func (h *SpotHandler) CreateSpot(w http.ResponseWriter, r *http.Request) {
+	var req model.CreateSpotRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+	if req.Lat == 0 && req.Lon == 0 {
+		http.Error(w, "lat and lon are required", http.StatusBadRequest)
+		return
+	}
+
+	spot, err := h.service.CreateSpot(r.Context(), req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSON(w, http.StatusCreated, spot)
+}
+
 func (h *SpotHandler) NearbySpots(w http.ResponseWriter, r *http.Request) {
 	lat, _ := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
 	lon, _ := strconv.ParseFloat(r.URL.Query().Get("lon"), 64)

@@ -31,6 +31,7 @@ export const spotsAPI = {
   get: (id) => api.get(`/spots/${id}`),
   details: (id) => api.get(`/spots/${id}/details`),
   nearby: (params) => api.get("/spots/nearby", { params }),
+  create: (data) => api.post("/spots", data),
 };
 
 export const searchAPI = {

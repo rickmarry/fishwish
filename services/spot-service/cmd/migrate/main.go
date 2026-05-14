@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	_ = godotenv.Load("../../.env.local")
+	_ = godotenv.Load(".env.local")
 
 	action := flag.String("action", "up", "migration action: up, down, version")
 	flag.Parse()

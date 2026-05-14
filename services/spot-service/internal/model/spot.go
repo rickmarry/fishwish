@@ -41,3 +41,11 @@ type NearbyParams struct {
 	RadiusMi float64
 	Limit    int
 }
+
+type CreateSpotRequest struct {
+	Name       string  `json:"name"`
+	Lat        float64 `json:"lat"`
+	Lon        float64 `json:"lon"`
+	Type       string  `json:"type"`
+	Difficulty string  `json:"difficulty"`
+}

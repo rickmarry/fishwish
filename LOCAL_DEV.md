@@ -49,18 +49,22 @@ Vite dev server on port 3006. Proxies `/api/*` to service ports.
 
 ### Depth Chart / Bathymetry Setup
 
-The map has a toggleable depth chart overlay using VectorCharts.com NOAA ENC tiles.
+The map has a toggleable depth chart overlay. Two providers are available:
 
-To enable it:
-1. Sign up at https://vectorcharts.com (free tier: 25k requests/month)
-2. Set your API key in `frontend/.env.local`:
-   ```
-   VITE_VECTORCHARTS_KEY=pk_your_key_here
-   ```
-3. Restart the frontend dev server
-4. A "Depth: OFF" button appears bottom-right of the map
+**Default — GEBCO WMS** (free, no key needed):
+- Global bathymetry via GEBCO_2024 grid (15 arc-second resolution)
+- Works out of the box — just restart the frontend
 
-Without the API key, the depth button is hidden and no depth tiles are loaded.
+**Alternative — VectorCharts.com** (requires API key):
+- Higher-resolution NOAA ENC vector tiles with styled contours
+- To use: set these in `frontend/.env.local`:
+  ```
+  VITE_DEPTH_PROVIDER=vectorcharts
+  VITE_VECTORCHARTS_KEY=pk_your_key_here
+  ```
+- Get a key at https://vectorcharts.com
+
+Without a valid VectorCharts key, the provider automatically falls back to GEBCO.
 
 ## Infrastructure
 
